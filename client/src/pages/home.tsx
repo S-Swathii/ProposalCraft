@@ -18,14 +18,40 @@ export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
-  const [proposal, setProposal] = useState<ProposalWithDate>({
-    clientName: "",
-    services: [],
-    pricing: [],
-    startDate: "",
-    endDate: "",
-    notes: "",
-    totalAmount: 0
+  // Initialize state with template data if available in localStorage
+  const [proposal, setProposal] = useState<ProposalWithDate>(() => {
+    const savedTemplate = localStorage.getItem("proposal_template");
+    
+    if (savedTemplate) {
+      try {
+        const templateData = JSON.parse(savedTemplate);
+        // Clear the template from localStorage to avoid reusing it on refresh
+        localStorage.removeItem("proposal_template");
+        
+        // Show toast notification
+        setTimeout(() => {
+          toast({
+            title: "Template Loaded",
+            description: "You're now working with a template. Customize it for your client.",
+          });
+        }, 500);
+        
+        return templateData;
+      } catch (error) {
+        console.error("Error parsing template data:", error);
+      }
+    }
+    
+    // Default values if no template is found
+    return {
+      clientName: "",
+      services: [],
+      pricing: [],
+      startDate: "",
+      endDate: "",
+      notes: "",
+      totalAmount: 0
+    };
   });
 
   const createProposalMutation = useMutation({
