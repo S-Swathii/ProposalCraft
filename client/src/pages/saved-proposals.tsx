@@ -23,7 +23,7 @@ import { ProposalWithDate } from "@shared/schema";
 import PrintButton from "@/components/ui/print-button";
 
 export default function SavedProposals() {
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -65,7 +65,7 @@ export default function SavedProposals() {
   };
 
   const handleEdit = (id: number) => {
-    navigate(`/edit-proposal/${id}`);
+    setLocation(`/edit-proposal/${id}`);
   };
 
   const formatCurrency = (amount: number) => {
@@ -100,7 +100,7 @@ export default function SavedProposals() {
             <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
               <Button 
                 className="inline-flex items-center"
-                onClick={() => navigate("/")}
+                onClick={() => setLocation("/")}
               >
                 Create new proposal
               </Button>
@@ -130,7 +130,7 @@ export default function SavedProposals() {
                 <p>No proposals found. Create your first proposal!</p>
                 <Button 
                   className="mt-4"
-                  onClick={() => navigate("/")}
+                  onClick={() => setLocation("/")}
                 >
                   Create Proposal
                 </Button>
